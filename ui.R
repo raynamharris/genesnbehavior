@@ -23,6 +23,7 @@ shinyUI(fluidPage(
         in response to active place avoidance traning."),
       strong("Experimental design"),
       img(src='fig-1a.png', align = "center", width = 200),
+      p(" "),
       varSelectInput("variable", "Behavioral estimate:",
                      behaviors, selected = "MaxTimeAvoid")
       

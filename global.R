@@ -52,5 +52,6 @@ sup3 <- read_csv("www/suppltable-3.csv") %>%
 
 # input variables for behavioral estimates
 behaviors <- sup1 %>%
+  select(TotalPath:ShockPerEntrance) %>%
   select(MaxTimeAvoid, everything()) %>%
   select(MaxTimeAvoid:ShockPerEntrance)  
