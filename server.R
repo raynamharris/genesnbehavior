@@ -9,6 +9,7 @@
 
 library(shiny)
 library(tidyverse)
+library(cowplot)
 
 
 shinyServer(function(input, output) {
@@ -23,7 +24,8 @@ shinyServer(function(input, output) {
       geom_errorbar(aes(ymin=value-se, ymax=value+se, color=treatment), width=.1) +
       geom_line() +
       geom_point(size = 2) +
-      labs(y = input$variable) +
+      labs(y = input$variable, 
+           subtitle = "Changes in learning, memory, and activity over time.") +
       scale_x_continuous(name= "trial", 
                          breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9),
                          labels = c( "P", "T1", "T2", "T3",
@@ -36,6 +38,38 @@ shinyServer(function(input, output) {
       theme(legend.position = "bottom") 
   })
   
- 
+  output$PCAplot <- renderPlot({
+    
+    a <- sup3 %>%
+      ggplot(aes(y= !!input$variable, 
+                 x=PC1)) +
+      geom_point(aes(color=treatment)) +
+      geom_smooth(method = "lm", aes(color = treatment2)) +
+      theme_minimal(base_size = 16) +
+      scale_color_manual(values = allcolors) +
+      theme(legend.position = "bottom") +
+      labs(x = "PC1: estimate of memory",
+           subtitle = "Analyais of principle components (PC) 1 and 2")
+    
+    b <- sup3 %>%
+      ggplot(aes(y= !!input$variable, 
+                 x=PC2)) +
+      geom_point(aes(color=treatment)) +
+      geom_smooth(method = "lm", aes(color = treatment2)) +
+      theme_minimal(base_size = 16) +
+      scale_color_manual(values = allcolors) +
+      theme(legend.position = "none")+
+      labs(x = "PC2: estimate of activity",
+           subtitle = "")
+    
+    legend <- get_legend(a)
+    
+    ab <- plot_grid(a + theme(legend.position = "none"),
+                    b)
+    
+    plot_grid(ab,legend, ncol = 1, rel_heights = c(1,0.1), rel_widths = c(1.1,1))
+    
+    
+  })  
   
 })

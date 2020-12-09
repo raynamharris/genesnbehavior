@@ -17,14 +17,26 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      varSelectInput("variable", "Behavioral estimate:", behaviors)
+      p("This Shiny App was built to explore the data collected 
+        to better understand how gene expression
+        in three subfields of the male mouse hippocampus changes 
+        in response to active place avoidance traning."),
+      strong("Experimental design"),
+      img(src='fig-1a.png', align = "center", width = 200),
+      varSelectInput("variable", "Behavioral estimate:",
+                     behaviors, selected = "MaxTimeAvoid")
+      
     ),
     
     # Show a plot of the generated distribution
     mainPanel(
       
-      img(src='fig-1.png', align = "center", width = 600),
-      plotOutput("behaviorplot")
+      
+      #h4("static figure 1"),
+      h4("Interactively explore the relationship between behavior and 
+         gene expression in the mouse hippocampus"),
+      plotOutput("behaviorplot"),
+      plotOutput("PCAplot")
     )
   )
 ))

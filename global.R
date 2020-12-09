@@ -35,14 +35,22 @@ table1 <- read_csv("www/table-1.csv")
 # supp table 1
 sup1 <- read_csv(file = "www/suppltable-1.csv") %>%
   mutate(treatment = factor(treatment, levels = levelstreatment)) 
-
-
 # supp table 2
 sup2 <- read_csv(file = "www/suppltable-2.csv")
 
 # supp table 3
-sup3 <- read_csv("www/suppltable-3.csv")
+sup3 <- read_csv("www/suppltable-3.csv") %>%
+  left_join(sup1) %>%
+  filter(trial == "Retention") %>%
+  mutate(treatment = factor(treatment, levelstreatment),
+         treatment2 = fct_collapse(treatment,
+                                   "trained" = c("conflict.trained",
+                                                 "standard.trained"),
+                                   "yoked" = c("conflict.yoked",
+                                               "standard.yoked")))
+  
 
 # input variables for behavioral estimates
 behaviors <- sup1 %>%
-  select(TotalPath:ShockPerEntrance)  
+  select(MaxTimeAvoid, everything()) %>%
+  select(MaxTimeAvoid:ShockPerEntrance)  
