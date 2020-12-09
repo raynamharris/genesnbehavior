@@ -1,4 +1,4 @@
-# genesnbehavior
+# Genes N Behavior
 
 A repo for the Shiny App at https://github.com/raynamharris/IntegrativeProjectWT2015/. 
 
